@@ -27,11 +27,13 @@ export default defineConfig(({ mode }) => {
       port: 8080,
       host: true,
       strictPort: true,
-      // 配置HTTPS
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, '.certs/localhost+3-key.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, '.certs/localhost+3.pem'))
-      },
+      // 配置HTTPS（仅开发模式）
+      https: mode === 'development'
+        ? {
+            key: fs.readFileSync(path.resolve(__dirname, '.certs/localhost+3-key.pem')),
+            cert: fs.readFileSync(path.resolve(__dirname, '.certs/localhost+3.pem'))
+          }
+        : false,
       // 设置CSP头
       headers: {
         'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com;"
