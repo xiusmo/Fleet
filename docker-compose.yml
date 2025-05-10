@@ -1,0 +1,152 @@
+version: '3.8'
+env_file:
+  - .env
+
+services:
+  # 后端服务
+  backend:
+    image: ghcr.io/${GHCR_OWNER}/${GHCR_REPO}-backend:latest
+    container_name: fleet_backend
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - backend_logs:/var/log/fleet
+      - ./fleet_master/migrations:/app/migrations
+    networks:
+      - fleet_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # 任务调度器服务
+  task_scheduler:
+    image: ghcr.io/${GHCR_OWNER}/${GHCR_REPO}-scheduler:latest
+    container_name: fleet_scheduler
+    restart: always
+    depends_on:
+      - db
+      - backend
+    volumes:
+      - backend_logs:/var/log/fleet
+    networks:
+      - fleet_network
+    healthcheck:
+      test: ["CMD-SHELL", "ps -ef | grep scheduler.py | grep -v grep || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # PostgreSQL 数据库
+  db:
+    image: postgres:15-alpine
+    container_name: fleet_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-task_scheduler}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fleet_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin - PostgreSQL管理工具
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: fleet_pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-xiusmo@gmail.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-2Pav4Z7gSVRw1Nr}
+      - PGADMIN_LISTEN_PORT=5050
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      - fleet_network
+
+  # Nginx 服务 (带ModSecurity)
+  nginx:
+    image: ghcr.io/${GHCR_OWNER}/${GHCR_REPO}-nginx:latest
+    container_name: fleet_nginx
+    restart: always
+    ports:
+      - "${NGINX_PORT:-80}:80"
+      - "${NGINX_SSL_PORT:-443}:443"
+    environment:
+      - PARANOIA=${PARANOIA}
+      - ANOMALY_INBOUND=${ANOMALY_INBOUND}
+      - ANOMALY_OUTBOUND=${ANOMALY_OUTBOUND}
+      - EXECUTING_PARANOIA=${EXECUTING_PARANOIA}
+      - ENFORCE_BODYPROC_URLENCODED=${ENFORCE_BODYPROC_URLENCODED}
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE}
+      - ALLOWED_METHODS=${ALLOWED_METHODS}
+      - ALLOW_RULE_ENGINE=${ALLOW_RULE_ENGINE}
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+      - nginx_logs:/var/log/nginx
+      - ./speedtest:/usr/share/nginx/speedtest
+    depends_on:
+      - backend
+      - pgadmin
+    networks:
+      - fleet_network
+    command: ["/bin/sh", "-c", "[ -f /etc/nginx/ssl/dhparam.pem ] || openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 && nginx -g 'daemon off;'"]
+
+  certbot:
+    image: certbot/certbot
+    container_name: fleet_certbot
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done"
+
+  # 初次申请证书使用一次性命令（之后可以删除）
+  # certbot_init:
+  #   image: certbot/certbot
+  #   container_name: certbot_init
+  #   depends_on:
+  #     - nginx
+  #   volumes:
+  #     - ./letsencrypt:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
+  #   entrypoint: >
+  #     certbot certonly --webroot --webroot-path=/var/www/certbot
+  #     --email xiusmo@gmail.com --agree-tos --no-eff-email
+  #     -d duh.xiusmo.com
+    
+  # Watchtower - 自动更新容器
+  watchtower:
+    image: containrrr/watchtower
+    container_name: fleet_watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 86400 --cleanup
+    networks:
+      - fleet_network
+
+networks:
+  fleet_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  backend_logs:
+  letsencrypt:
+  certbot_www:
+  nginx_logs:

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="zh-CN">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css" class="AMap.style">
+        .vml {
+            behavior: url(#default#VML);
+            display: inline-block;
+            position: absolute
+        }
+
+        .amap-custom {
+            top: 0;
+            left: 0;
+            position: absolute
+        }
+
+        .amap-container img {
+            max-width: none !important;
+            max-height: none !important
+        }
+
+        .amap-container {
+            touch-action: none;
+            position: relative;
+            overflow: hidden;
+            background: #fcf9f2 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0AgMAAAC2uDcZAAAADFBMVEX////////////////1pQ5zAAAABHRSTlMAgP/AWuZC2AAAAVhJREFUeAFiYGAQYGDEQjAB2rcDC4BiGIqiU7abdKlO2QkeIClyPsDHweMKtOPHIJ1Op6/w7Y4fdqfT6VpndzqdrnV2p9PpWmd3Oj3qWndSoKp+2J1Op7vr7E6n07XO7nQ6XevsTqfTtc7udPo4/f787E6n0911dqfT6VpndzqdrnV2p9PpWmd3Ot27Ce8m6HS6u85dR6fTtU7r6HS61mkdnU7XOrvT6XTvJuxOp9PddXan0+laZ3c6na51dDpd67SOTqd7N+HdBJ1Od9e56+h0utZpHZ1O1zq70+l0rbM7nU73bsLudDrdXWd3Ol3rtI5Op2ud1tHpdK3TOjqd7t2EdxN0Ot1dZ3c6na51dqfT6VpndzqdrnV2p9Pp3k3Q6XR3nbuOTqdrndbR6XSt0zo6na51Wken072bsDudTnfX2Z1Op2ud3el0utbZnU7XOq2j0+t0uncTD1gO4zoT5doZAAAAAElFTkSuQmCC);
+            -ms-touch-action: none
+        }
+
+        .amap-drags,
+        .amap-layers {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            overflow: hidden
+        }
+
+        .amap-layers canvas {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+
+        .amap-layer img {
+            pointer-events: none
+        }
+
+        .amap-e,
+        .amap-maps {
+            width: 100%;
+            height: 100%
+        }
+
+        .amap-maps,
+        .amap-e,
+        .amap-layers,
+        .amap-tile,
+        .amap-tile-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden
+        }
+
+        .amap-context {
+            position: absolute;
+            left: 0;
+            top: 0
+        }
+
+        .amap-overlays,
+        .amap-markers,
+        .amap-marker {
+            position: absolute;
+            left: 0;
+            top: 0
+        }
+
+        .amap-layers {
+            z-index: 0
+        }
+
+        .amap-overlays {
+            z-index: 110;
+            cursor: default
+        }
+
+        .amap-markers {
+            z-index: 120
+        }
+
+        .amap-controls {
+            z-index: 150
+        }
+
+        .amap-copyright {
+            position: absolute;
+            display: block !important;
+            left: 85px;
+            height: 16px;
+            bottom: .1px;
+            padding-bottom: 3px;
+            font-size: 11px;
+            font-family: Arial, sans-serif;
+            z-index: 160
+        }
+
+        .amap-logo {
+            position: absolute;
+            bottom: 1.5px;
+            left: 4px;
+            z-index: 160;
+            height: 20px
+        }
+
+        .amap-logo img {
+            width: 73px !important;
+            height: 20px !important;
+            border: 0;
+            vertical-align: baseline !important
+        }
+
+        .amap-icon {
+            position: relative;
+            z-index: 1
+        }
+
+        .amap-icon img {
+            position: absolute;
+            z-index: -1
+        }
+
+        .amap-marker-label {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid blue;
+            background-color: white;
+            white-space: nowrap;
+            cursor: default;
+            padding: 3px;
+            font-size: 12px;
+            line-height: 14px
+        }
+
+        .amap-info {
+            position: absolute;
+            left: 0;
+            z-index: 140;
+            width: 320px
+        }
+
+        .amap-menu {
+            position: absolute;
+            z-index: 140;
+            _width: 100px
+        }
+
+        .amap-info-close {
+            position: absolute;
+            right: 5px;
+            _right: 12px;
+            +right: 11px;
+            top: 5px;
+            _top: 2px;
+            +top: 2px;
+            color: #c3c3c3;
+            text-decoration: none;
+            font: bold 16px/14px Tahoma, Verdana, sans-serif;
+            width: 14px;
+            height: 14px
+        }
+
+        .amap-info-outer,
+        .amap-menu-outer {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background: none repeat scroll 0 0 white;
+            border-radius: 2px;
+            padding: 1px;
+            text-align: left
+        }
+
+        .amap-menu-outer:hover {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3)
+        }
+
+        .amap-info-contentContainer:hover .amap-info-outer {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3)
+        }
+
+        .amap-info-content {
+            position: relative;
+            background: #fff;
+            padding: 10px 18px 10px 10px;
+            line-height: 1.4;
+            overflow: auto
+        }
+
+        .amap-marker-content {
+            position: relative
+        }
+
+        .amap-info {
+            _width: 320px
+        }
+
+        .amap-menu {
+            _width: 100px
+        }
+
+        .amap-info-sharp-old {
+            overflow: hidden;
+            position: absolute;
+            background-image: url(http://webapi.amap.com/images/arrows.png)
+        }
+
+        .bottom-center .amap-info-sharp-old {
+            height: 12px;
+            margin: 0 auto;
+            width: 20px;
+            background-position: center 12px;
+            top: 100%;
+            margin-top: -9px;
+            left: 50%;
+            margin-left: -10px
+        }
+
+        .bottom-left .amap-info-sharp-old {
+            height: 12px;
+            width: 13px;
+            background-position: -16px -46px;
+            top: 100%;
+            margin-top: -9px
+        }
+
+        .bottom-right .amap-info-sharp-old {
+            height: 12px;
+            width: 13px;
+            top: -1px;
+            background-position: -56px -46px;
+            left: 100%;
+            margin-left: -13px;
+            top: 100%;
+            margin-top: -9px
+        }
+
+        .middle-left .amap-info-sharp-old {
+            height: 20px;
+            width: 12px;
+            background-position: left;
+            top: 50%;
+            margin-top: -10px;
+            margin-left: -11px
+        }
+
+        .center .amap-info-sharp-old {
+            display: none
+        }
+
+        .middle-right .amap-info-sharp-old {
+            height: 20px;
+            margin-right: 0;
+            width: 12px;
+            background-position: right;
+            left: 100%;
+            margin-left: -9px;
+            top: 50%;
+            margin-top: -10px
+        }
+
+        .top-center .amap-info-sharp-old {
+            height: 12px;
+            margin: 0 auto;
+            width: 20px;
+            background-position: top;
+            top: 0;
+            margin-top: -3px;
+            left: 50%;
+            margin-left: -10px
+        }
+
+        .top-left .amap-info-sharp-old {
+            height: 12px;
+            width: 13px;
+            background-position: -16px -3px;
+            top: 0;
+            margin-top: -3px
+        }
+
+        .top-right .amap-info-sharp-old {
+            height: 12px;
+            width: 13px;
+            background-position: -56px -3px;
+            left: 100%;
+            margin-left: -13px;
+            top: 0;
+            margin-top: -3px
+        }
+
+        .amap-info-sharp {
+            position: absolute
+        }
+
+        .bottom-center .amap-info-sharp {
+            bottom: 0;
+            left: 50%;
+            margin-left: -8px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #fff
+        }
+
+        .bottom-center .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-left: -8px;
+            margin-top: -7px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(0, 0, 0, 0.3);
+            filter: blur(2px);
+            z-index: -1
+        }
+
+        .amap-info-contentContainer:hover.bottom-center .amap-info-sharp:after {
+            border-top: 8px solid rgba(0, 0, 0, 0.5)
+        }
+
+        .bottom-left .amap-info-sharp {
+            border-color: transparent #fff;
+            border-width: 0 0 10px 10px;
+            border-style: solid
+        }
+
+        .bottom-left .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-left: -10px;
+            border-color: transparent rgba(0, 0, 0, 0.3);
+            border-width: 0 0 10px 10px;
+            border-style: solid;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .amap-info-contentContainer:hover.bottom-left .amap-info-sharp:after {
+            border-color: transparent rgba(0, 0, 0, 0.5)
+        }
+
+        .bottom-left .amap-info-content {
+            border-radius: 2px 2px 2px 0
+        }
+
+        .bottom-right .amap-info-sharp {
+            right: 0;
+            border-top: 10px solid #fff;
+            border-left: 10px solid transparent
+        }
+
+        .bottom-right .amap-info-sharp:after {
+            position: absolute;
+            margin-top: -9px;
+            margin-left: -10px;
+            content: "";
+            border-top: 10px solid rgba(0, 0, 0, 0.3);
+            border-left: 10px solid transparent;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .amap-info-contentContainer:hover.bottom-right .amap-info-sharp:after {
+            border-top: 10px solid rgba(0, 0, 0, 0.5)
+        }
+
+        .bottom-right .amap-info-content {
+            border-radius: 2px 2px 0 2px
+        }
+
+        .top-center .amap-info-sharp {
+            top: 0;
+            left: 50%;
+            margin-left: -8px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #fff
+        }
+
+        .top-center .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-top: 0;
+            margin-left: -8px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid rgba(0, 0, 0, 0.3);
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .top-left .amap-info-sharp {
+            left: 0;
+            top: 0;
+            border-bottom: 10px solid #fff;
+            border-right: 10px solid transparent
+        }
+
+        .top-left .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-top: 0;
+            margin-left: 0;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.3);
+            border-right: 10px solid transparent;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .top-right .amap-info-sharp {
+            right: 0;
+            top: 0;
+            border-bottom: 10px solid #fff;
+            border-left: 10px solid transparent
+        }
+
+        .top-right .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-top: 0;
+            margin-left: -10px;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.3);
+            border-left: 10px solid transparent;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .middle-right .amap-info-sharp {
+            right: 0;
+            top: 50%;
+            margin-top: -8px;
+            border-top: 8px solid transparent;
+            border-left: 8px solid #fff;
+            border-bottom: 8px solid transparent
+        }
+
+        .middle-right .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-top: -8px;
+            margin-left: -8px;
+            border-top: 8px solid transparent;
+            border-left: 8px solid rgba(0, 0, 0, 0.3);
+            border-bottom: 8px solid transparent;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .amap-info-contentContainer:hover.middle-right .amap-info-sharp:after {
+            border-left: 8px solid rgba(0, 0, 0, 0.5)
+        }
+
+        .middle-left .amap-info-sharp {
+            left: 0;
+            top: 50%;
+            margin-top: -8px;
+            border-top: 8px solid transparent;
+            border-right: 8px solid #fff;
+            border-bottom: 8px solid transparent
+        }
+
+        .middle-left .amap-info-sharp:after {
+            position: absolute;
+            content: "";
+            margin-top: -8px;
+            margin-left: 0;
+            border-top: 8px solid transparent;
+            border-right: 8px solid rgba(0, 0, 0, 0.3);
+            border-bottom: 8px solid transparent;
+            filter: blur(1px);
+            z-index: -1
+        }
+
+        .amap-info-contentContainer:hover.middle-left .amap-info-sharp:after {
+            border-right: 8px solid rgba(0, 0, 0, 0.5)
+        }
+
+        .amap-info-contentContainer.top-left,
+        .amap-info-contentContainer.top-center,
+        .amap-info-contentContainer.top-right {
+            padding-top: 8px
+        }
+
+        .amap-info-contentContainer.bottom-left,
+        .amap-info-contentContainer.bottom-center,
+        .amap-info-contentContainer.bottom-right {
+            padding-bottom: 8px
+        }
+
+        .amap-info-contentContainer.middle-right {
+            padding-right: 8px
+        }
+
+        .amap-info-contentContainer.middle-left {
+            padding-left: 8px
+        }
+
+        .amap-menu-outer {
+            margin: 0;
+            padding: 0;
+            list-style-type: none
+        }
+
+        ul.amap-menu-outer li {
+            cursor: pointer;
+            height: 35px;
+            line-height: 35px;
+            word-break: break-all;
+            padding: 0 10px;
+            font-size: 12px;
+            white-space: nowrap
+        }
+
+        ul.amap-menu-outer li a {
+            text-decoration: none;
+            font-size: 13px;
+            margin: 0 5px;
+            color: #000;
+            padding: 5px 5px
+        }
+
+        ul.amap-menu-outer li:hover {
+            background-color: #f3f3ee
+        }
+
+        .amap-overlay-text-container {
+            display: block;
+            width: auto;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: #fff;
+            padding: 2px 3px;
+            border: 1px solid #ccc;
+            border-radius: 3px
+        }
+
+        .amap-overlay-text-container.amap-overlay-text-empty {
+            display: none
+        }
+
+        .amap-info-content-ie8 {
+            border: 1px solid #9c9c9c
+        }
+    </style>
+    <style type="text/css">
+        .amap-logo {
+            display: block !important;
+            pointer-events: none;
+        }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta http-equiv="pragram" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="expires" content="0">
+    <link rel="icon" href="http://xg.usc.edu.cn:81/webApp/xuegong/favicon.ico">
+    <script>window._AMapSecurityConfig = {
+            // securityJsCode: '144fec9e08345352ce467248f43d7d7f',
+            securityJsCode: '329977d48d064c5483498a44d3618d98',
+        }</script>
+    <script src="./请销假_files/maps"></script>
+    <style type="text/css">
+        .amap-container {
+            cursor: url(https://webapi.amap.com/theme/v1.3/openhand.cur), default;
+        }
+
+        .amap-drag {
+            cursor: url(https://webapi.amap.com/theme/v1.3/closedhand.cur), default;
+        }
+    </style>
+    <script crossorigin="anonymous" id="amap_plus_js" src="./请销假_files/modules" type="text/javascript"></script>
+    <title>请销假</title>
+    <link href="./请销假_files/app.54e3bf2c.css" rel="preload" as="style">
+    <link href="./请销假_files/chunk-vendors.3092c104.css" rel="preload" as="style">
+    <link href="./请销假_files/app.525aedc2.js" rel="preload" as="script">
+    <link href="./请销假_files/chunk-vendors.572a8430.js" rel="preload" as="script">
+    <link href="./请销假_files/chunk-vendors.3092c104.css" rel="stylesheet">
+    <link href="./请销假_files/app.54e3bf2c.css" rel="stylesheet">
+</head>
+
+<body><noscript><strong>We're sorry but xuegong doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong></noscript>
+    <div><!---->
+        <div>
+            <div data-v-8e00b034="" class="loading" style="display: none;"><img data-v-8e00b034=""
+                    src=""
+                    alt=""></div><!---->
+            <div>
+                <section data-v-2886a3a2="">
+                    <div data-v-2886a3a2="" class="van-cell">
+                        <div data-v-2886a3a2="" class="van-cell__value van-cell__value--alone">
+                            <div data-v-2886a3a2="" class="van-row">
+                                <div data-v-2886a3a2="" class="van-col van-col--14">
+                                    <div data-v-2886a3a2="" class="list-item-info">
+                                        <div data-v-2886a3a2="" class="imgWrap">
+                                            <div data-v-2886a3a2="" class="van-image" style="width: 100%;">
+                                                <div class="van-image__error"><i
+                                                        class="van-icon van-icon-photo-fail van-image__error-icon"><!----></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-v-2886a3a2="" class="nameWrap"><span data-v-2886a3a2=""
+                                                style="font-weight: bold; color: rgb(51, 51, 51);">姓名 - 类型<br
+                                                    data-v-2886a3a2=""></span><span data-v-2886a3a2=""
+                                                style="font-size: 13px; color: rgb(102, 102, 102);">学号</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-v-2886a3a2="" class="van-collapse van-hairline--top-bottom">
+                        <div data-v-2886a3a2="" class="van-collapse-item">
+                            <div role="button" tabindex="0" aria-expanded="false"
+                                class="van-cell van-cell--clickable van-collapse-item__title">
+                                <div class="van-cell__title"><span>申请人信息</span></div><i
+                                    class="van-icon van-icon-arrow van-cell__right-icon"><!----></i>
+                            </div>
+                            <div class="van-collapse-item__wrapper" style="height: 0px; display: none;">
+                                <div class="van-collapse-item__content">
+                                    <section data-v-2886a3a2="" class="van-doc-demo-block">
+                                        <div data-v-2886a3a2="" class="list-item van-cell">
+                                            <div data-v-2886a3a2="" class="van-cell__value van-cell__value--alone">
+                                                <div data-v-2886a3a2="" class="list-item-info">姓名：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">学院：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">专业：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">班级：</div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-v-2886a3a2="" class="van-collapse-item van-collapse-item--border">
+                            <div role="button" tabindex="0" aria-expanded="true"
+                                class="van-cell van-cell--clickable van-collapse-item__title van-collapse-item__title--expanded">
+                                <div class="van-cell__title"><span>申请内容</span></div><i
+                                    class="van-icon van-icon-arrow van-cell__right-icon"><!----></i>
+                            </div>
+                            <div class="van-collapse-item__wrapper" style="">
+                                <div class="van-collapse-item__content">
+                                    <section data-v-2886a3a2="" class="van-doc-demo-block">
+                                        <div data-v-2886a3a2="" class="list-item vanCellImg van-cell">
+                                            <div data-v-2886a3a2="" class="van-cell__value van-cell__value--alone">
+                                                <div data-v-2886a3a2="" class="list-item-info">开始时间：2024-11-05 11:45:00
+                                                </div>
+                                                <div data-v-2886a3a2="" class="list-item-info">结束时间：2024-11-05 21:55:00
+                                                </div>
+                                                <div data-v-2886a3a2="" class="list-item-info">本人电话：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">家长姓名：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">家长电话：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">申请事由：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">请假课程：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">外出地点：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">交通工具：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">
+                                                    家庭地址：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">申请时长：1天</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">
+                                                    附&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件：<br
+                                                        data-v-2886a3a2=""><!----></div>
+                                                <div data-v-2886a3a2="" class="list-item-info">请假位置：Jikui Road</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">销假位置：University of South
+                                                    China Engineering Training Center Innovative Innovation College
+                                                </div>
+                                                <div data-v-2886a3a2="" class="list-item-info">宿舍楼：</div>
+                                                <div data-v-2886a3a2="" class="list-item-info">宿舍号：</div>
+                                                <div data-v-2886a3a2="">
+                                                    <div data-v-2886a3a2=""><img data-v-2886a3a2=""
+                                                            src="./请销假_files/yxj.f7564855.png" alt="" class="applyCard">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-v-2886a3a2="" class="van-collapse-item van-collapse-item--border">
+                            <div role="button" tabindex="0" aria-expanded="true"
+                                class="van-cell van-cell--clickable van-collapse-item__title van-collapse-item__title--expanded">
+                                <div class="van-cell__title"><span>审批进度</span></div><i
+                                    class="van-icon van-icon-arrow van-cell__right-icon"><!----></i>
+                            </div>
+                            <div class="van-collapse-item__wrapper">
+                                <div class="van-collapse-item__content">
+                                    <section data-v-2886a3a2="" class="van-doc-demo-block" style="margin-bottom: 80px;">
+                                        <div data-v-2886a3a2="" class="list-item vanCellImg van-cell">
+                                            <div data-v-2886a3a2="" class="van-cell__value van-cell__value--alone">
+                                                <div data-v-2886a3a2="" class="van-steps van-steps--vertical">
+                                                    <div class="van-steps__items">
+                                                        <div data-v-2886a3a2=""
+                                                            class="van-hairline van-step van-step--vertical van-step--process"
+                                                            style="display: none;">
+                                                            <div class="van-step__title van-step__title--active"></div>
+                                                            <div class="van-step__circle-container"><i
+                                                                    class="van-icon van-icon-passed van-step__icon van-step__icon--active"><!----></i>
+                                                            </div>
+                                                            <div class="van-step__line"></div>
+                                                        </div>
+                                                        <div data-v-2886a3a2=""
+                                                            class="van-hairline van-step van-step--vertical">
+                                                            <div class="van-step__title">
+                                                                <h3 data-v-2886a3a2=""
+                                                                    style="color: rgb(28, 195, 151);">发起申请</h3>
+                                                                <p data-v-2886a3a2="" style="color: rgb(28, 195, 151);">
+                                                                    2024-11-05 11:26:11</p>
+                                                            </div>
+                                                            <div class="van-step__circle-container"><i
+                                                                    class="van-icon van-icon-checked van-step__icon"><!----></i>
+                                                            </div>
+                                                            <div class="van-step__line"></div>
+                                                        </div>
+                                                        <div data-v-2886a3a2=""
+                                                            class="van-hairline van-step van-step--vertical">
+                                                            <div class="van-step__title"><i data-v-2886a3a2=""
+                                                                    class="blue van-icon van-icon-checked"
+                                                                    style="position: absolute; left: -14px; top: 10px; z-index: 10;"><!----></i>
+                                                                <h3 data-v-2886a3a2="" class="blue">[辅导员] <span
+                                                                        data-v-2886a3a2=""> [辅导员编号|辅导员姓名]</span></h3>
+                                                                <p data-v-2886a3a2="" class="blue">已通过</p>
+                                                                <p data-v-2886a3a2="" class="blue"></p>
+                                                                <p data-v-2886a3a2="" class="blue">2024-11-05 12:50:22
+                                                                </p>
+                                                            </div>
+                                                            <div class="van-step__circle-container"><i
+                                                                    class="van-icon van-icon-checked van-step__icon"><!----></i>
+                                                            </div>
+                                                            <div class="van-step__line"></div>
+                                                        </div>
+                                                        <div data-v-2886a3a2=""
+                                                            class="van-hairline van-step van-step--vertical"
+                                                            style="display: none;">
+                                                            <div class="van-step__title"></div>
+                                                            <div class="van-step__circle-container"><i
+                                                                    class="van-icon van-icon-checked van-step__icon"><!----></i>
+                                                            </div>
+                                                            <div class="van-step__line"></div>
+                                                        </div><!---->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div data-v-2886a3a2="" class="van-submit-bar"><button data-v-2886a3a2=""
+                            class="van-submit-bar-button van-submit-bar-button1 van-button van-button--info van-button--normal">
+                            <div data-v-2886a3a2="" class="van-button__content"><span data-v-2886a3a2=""
+                                    class="van-button__text">返回 </span></div>
+                        </button></div><!---->
+                </section>
+            </div>
+        </div>
+    </div>
+    <script src="./请销假_files/chunk-vendors.572a8430.js"></script>
+    <script src="./请销假_files/app.525aedc2.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+name: CI/CD to GHCR
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GHCR_OWNER: ${{ secrets.GHCR_OWNER }}
+  GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+  GHCR_REPO: fleet
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ env.GHCR_OWNER }}
+          password: ${{ env.GHCR_TOKEN }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./fleet_master
+          file: ./fleet_master/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.GHCR_OWNER }}/${{ env.GHCR_REPO }}-backend:latest
+
+      - name: Build and push scheduler
+        uses: docker/build-push-action@v4
+        with:
+          context: ./fleet_master
+          file: ./fleet_master/Dockerfile.scheduler
+          push: true
+          tags: ghcr.io/${{ env.GHCR_OWNER }}/${{ env.GHCR_REPO }}-scheduler:latest
+
+      - name: Build and push nginx
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./nginx/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.GHCR_OWNER }}/${{ env.GHCR_REPO }}-nginx:latest 

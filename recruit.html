@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet 项目长期共创者招募</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: auto; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+    code { background: #f4f4f4; padding: 2px 4px; }
+    section { margin-bottom: 40px; }
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 { margin: 0; }
+    .btn { display: inline-block; padding: 10px 20px; color: #fff; background: #3498db; text-decoration: none; border-radius: 4px; }
+    .btn:hover { background: #2980b9; }
+    ul { list-style: disc inside; }
+    table { border-collapse: collapse; width: 100%; }
+    table th, table td { border: 1px solid #ddd; padding: 8px; }
+    table th { background: #ecf0f1; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Fleet 项目长期共创者招募</h1>
+    <p>分布式任务调度平台 + 用户 & 管理员前端界面 | Docker Compose 部署</p>
+  </div>
+
+  <section>
+    <h2>项目概览</h2>
+    <p>Fleet 是一个基于分布式架构的任务调度平台，提供任务提交、调度、状态监控及管理后台，包含用户前端与管理员前端，支持一键 Docker Compose 部署。</p>
+  </section>
+
+  <section>
+    <h2>核心特性</h2>
+    <ul>
+      <li>Python FastAPI API 服务（RESTful，JWT 认证）</li>
+      <li>分布式调度器：异步任务执行、工作节点心跳</li>
+      <li>Vue 3 + Vite 用户前端</li>
+      <li>Vue 3 + Element Plus 管理员后台</li>
+      <li>Nginx 反向代理 & ModSecurity 防火墙</li>
+      <li>PostgreSQL 数据持久化 + pgAdmin 管理</li>
+      <li>自动 SSL/TLS 证书管理（Certbot & Let's Encrypt）</li>
+      <li>容器自动更新（Watchtower）</li>
+      <li>日志持久化与健康检查</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>技术栈</h2>
+    <table>
+      <tr><th>组件</th><th>技术</th></tr>
+      <tr><td>后端</td><td>Python 3.11, FastAPI, SQLModel, asyncpg</td></tr>
+      <tr><td>调度器</td><td>Python, asyncio</td></tr>
+      <tr><td>用户前端</td><td>Vue 3, Vite, Axios</td></tr>
+      <tr><td>管理后台</td><td>Vue 3, Element Plus, Pinia</td></tr>
+      <tr><td>数据库</td><td>PostgreSQL</td></tr>
+      <tr><td>容器编排</td><td>Docker Compose</td></tr>
+      <tr><td>反代 & 安全</td><td>Nginx, ModSecurity, Certbot</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>项目结构</h2>
+    <pre>
+Fleet/
+├─ fleet_task_scheduler/   # API & 调度服务 (FastAPI) 被软件多实例部署
+├─ fleet_node_service/     # 子节点 (FastAPI) 被物理多实例部署
+├─ user_frontend/          # 用户前端 (Vue 3 + Vite)
+├─ admin_dashboard/        # 管理后台 (Vue 3 + Element Plus)
+├─ nginx/                  # Nginx 配置 & 前端静态文件
+├─ docker-compose.yml      # 服务编排文件
+├─ .env                    # 环境变量示例
+└─ README.md               # 项目说明文档
+    </pre>
+  </section>
+
+  <section>
+    <h2>共创者技术要求</h2>
+    <ul>
+      <li>具备对 XXT 组件进行逆向分析和逆向工程的能力</li>
+      <li>熟悉 Docker Compose 部署与日常运维</li>
+      <li>能够投入充足时间参与项目，并负责反馈群组的管理与沟通</li>
+      <li>熟悉 Cloudflare 控制台</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>联系方式</h2>
+    <p>Email: xiusmo@gmail.com</p>
+    <h2>项目地址</h2>
+    <p><a href="https://xiusmo.com" target="_blank">xiusmo.com</a></p>
+  </section>
+
+  <footer style="text-align:center; margin-top:60px; color:#888;">
+    <p>&copy; 2025 Fleet 项目维护团队</p>
+  </footer>
+</body>
+</html> 

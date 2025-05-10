@@ -1,0 +1,195 @@
+# ==========================================================
+# 通用日志文件
+# ==========================================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==========================================================
+# 依赖目录
+# ==========================================================
+node_modules/
+__pypackages__/
+
+# ==========================================================
+# 构建 / 打包输出
+# ==========================================================
+dist/
+dist-ssr/
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==========================================================
+# 覆盖率 / 测试报告
+# ==========================================================
+coverage/
+htmlcov/
+.nyc_output/
+.nox/
+.tox/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# ==========================================================
+# 缓存 / 临时文件
+# ==========================================================
+.npm/
+.eslintcache
+.stylelintcache
+.temp/
+.cache/
+*.cache
+*.tmp
+*.bak
+*.swp
+*~
+
+# ==========================================================
+# 系统文件
+# ==========================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================================
+# 本地环境文件
+# ==========================================================
+.env
+.env.prod
+.env.local
+.env.*.local
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pdm.toml
+!.env.example
+
+# ==========================================================
+# 证书文件
+# ==========================================================
+*.pem
+*.key
+*.crt
+.certs/
+
+# ==========================================================
+# 编辑器 / IDE
+# ==========================================================
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-*
+.project
+.classpath
+.settings/
+.history
+.spyderproject
+.spyproject
+.ropeproject
+
+# ==========================================================
+# PyCharm
+# ==========================================================
+#.idea/
+
+# ==========================================================
+# Python 相关
+# ==========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Cython 调试
+cython_debug/
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Django
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask
+instance/
+.webassets-cache/
+
+# Scrapy
+.scrapy/
+
+# Sphinx 文档
+docs/_build/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# mypy / 类型检查
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# ==========================================================
+# 压缩 / 打包文件
+# ==========================================================
+*.tgz
+*.zip
+*.tar.gz
+*.rar
+
+# ==========================================================
+# 依赖锁定文件
+# ==========================================================
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
+# Pipfile.lock
+# poetry.lock
+# pdm.lock
