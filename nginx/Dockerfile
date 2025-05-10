@@ -20,15 +20,16 @@ RUN npm run build
 # 3. 最终 Nginx 镜像
 FROM owasp/modsecurity-crs:nginx-alpine
 
+USER root
+
 # 复制 Nginx 配置 & ModSecurity 规则
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/conf.d/ /etc/nginx/conf.d/
 COPY nginx/.htpasswd /etc/nginx/.htpasswd
 COPY nginx/modsecurity.d/ /etc/nginx/modsecurity.d/
 
-# 创建 SSL 目录，生成 dhparam.pem，并设置权限
+# 创建 SSL 目录并生成 dhparam.pem
 RUN mkdir -p /etc/nginx/ssl \
- && chown -R nginx:nginx /etc/nginx/ssl \
  && openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 
 # 复制前端静态资源
