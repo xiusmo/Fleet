@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # 后端服务
   backend:
@@ -76,9 +74,11 @@ services:
     networks:
       - fleet_network
 
-  # Nginx 服务 (带ModSecurity)
+  # Nginx 服务 (ModSecurity)
   nginx:
     image: ghcr.io/${GHCR_OWNER}/${GHCR_REPO}-nginx:latest
+    env_file:
+      - .env
     container_name: fleet_nginx
     restart: always
     ports:
@@ -94,6 +94,7 @@ services:
       - ALLOWED_METHODS=${ALLOWED_METHODS}
       - ALLOW_RULE_ENGINE=${ALLOW_RULE_ENGINE}
     volumes:
+      - ./nginx/ssl:/etc/nginx/ssl:ro
       - letsencrypt:/etc/letsencrypt
       - certbot_www:/var/www/certbot
       - nginx_logs:/var/log/nginx
@@ -105,14 +106,14 @@ services:
       - fleet_network
     command: ["/bin/sh", "-c", "[ -f /etc/nginx/ssl/dhparam.pem ] || openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 && nginx -g 'daemon off;'"]
 
-  certbot:
-    image: certbot/certbot
-    container_name: fleet_certbot
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-    entrypoint: >
-      sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done"
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: fleet_certbot
+  #   volumes:
+  #     - ./letsencrypt:/etc/letsencrypt
+  #     - ./certbot/www:/var/www/certbot
+  #   entrypoint: >
+  #     sh -c "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done"
 
   # 初次申请证书使用一次性命令（之后可以删除）
   # certbot_init:
