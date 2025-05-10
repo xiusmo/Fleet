@@ -84,15 +84,6 @@ services:
     ports:
       - "${NGINX_PORT:-80}:80"
       - "${NGINX_SSL_PORT:-443}:443"
-    environment:
-      - PARANOIA=${PARANOIA}
-      - ANOMALY_INBOUND=${ANOMALY_INBOUND}
-      - ANOMALY_OUTBOUND=${ANOMALY_OUTBOUND}
-      - EXECUTING_PARANOIA=${EXECUTING_PARANOIA}
-      - ENFORCE_BODYPROC_URLENCODED=${ENFORCE_BODYPROC_URLENCODED}
-      - MAX_FILE_SIZE=${MAX_FILE_SIZE}
-      - ALLOWED_METHODS=${ALLOWED_METHODS}
-      - ALLOW_RULE_ENGINE=${ALLOW_RULE_ENGINE}
     volumes:
       - ./nginx/ssl:/etc/nginx/ssl:ro
       - letsencrypt:/etc/letsencrypt

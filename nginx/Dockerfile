@@ -3,20 +3,20 @@
 # 1. 构建 Admin Dashboard
 FROM node:18-alpine AS admin_builder
 WORKDIR /app
+COPY .env .env
 COPY admin_dashboard/package*.json ./
 RUN npm ci --silent
 COPY admin_dashboard/ ./
-RUN cp .env.development .env
 RUN npm run build
 
 # 2. 构建 User Frontend
 FROM node:18-alpine AS user_builder
 WORKDIR /app
+COPY .env .env
 COPY user_frontend/package*.json ./
 RUN npm ci --silent
 RUN npm install terser --no-save
 COPY user_frontend/ ./
-RUN cp .env.development .env
 RUN npm run build
 
 # 3. 最终 Nginx 镜像
