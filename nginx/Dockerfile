@@ -13,6 +13,7 @@ FROM node:18-alpine AS user_builder
 WORKDIR /app
 COPY user_frontend/package*.json ./
 RUN npm ci --silent
+RUN npm install terser --no-save
 COPY user_frontend/ ./
 RUN npm run build
 
