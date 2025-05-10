@@ -41,13 +41,10 @@ services:
 
   # PostgreSQL 数据库
   db:
+    env_file: .env
     image: postgres:15-alpine
     container_name: fleet_postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=${DB_USER:-postgres}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
-      - POSTGRES_DB=${DB_NAME:-task_scheduler}
+    restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -60,15 +57,13 @@ services:
 
   # pgAdmin - PostgreSQL管理工具
   pgadmin:
-    image: dpage/pgadmin4
+    env_file: .env
+    image: dpage/pgadmin4:latest
     container_name: fleet_pgadmin
-    restart: always
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-xiusmo@gmail.com}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-2Pav4Z7gSVRw1Nr}
-      - PGADMIN_LISTEN_PORT=5050
+    restart: unless-stopped
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin/storage
     depends_on:
       - db
     networks:
@@ -77,8 +72,7 @@ services:
   # Nginx 服务 (ModSecurity)
   nginx:
     image: ghcr.io/${GHCR_OWNER}/${GHCR_REPO}-nginx:latest
-    env_file:
-      - .env
+    env_file: .env
     container_name: fleet_nginx
     restart: always
     ports:
