@@ -26,6 +26,11 @@ COPY nginx/conf.d/ /etc/nginx/conf.d/
 COPY nginx/.htpasswd /etc/nginx/.htpasswd
 COPY nginx/modsecurity.d/ /etc/nginx/modsecurity.d/
 
+# 创建 SSL 目录，生成 dhparam.pem，并设置权限
+RUN mkdir -p /etc/nginx/ssl \
+ && chown -R nginx:nginx /etc/nginx/ssl \
+ && openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+
 # 复制前端静态资源
 COPY --from=admin_builder /app/dist /usr/share/nginx/frontend/admin
 COPY --from=user_builder /app/dist /usr/share/nginx/frontend/user
@@ -36,5 +41,5 @@ VOLUME ["/etc/letsencrypt", "/var/www/certbot"]
 # 暴露端口
 EXPOSE 80 443
 
-# 默认启动：生成 dhparam（如不存在）并启动 Nginx
-CMD ["/bin/sh", "-c", "[ -f /etc/nginx/ssl/dhparam.pem ] || openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048 && nginx -g 'daemon off;'"] 
+# 简化启动命令，直接启动 Nginx
+CMD ["nginx", "-g", "daemon off;"]
