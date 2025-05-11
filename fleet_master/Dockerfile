@@ -27,6 +27,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # 复制应用代码
 COPY . .
+RUN mkdir -p /app/config
 
 # 创建日志目录
 RUN mkdir -p /var/log/fleet && \
