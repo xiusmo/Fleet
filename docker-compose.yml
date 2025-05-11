@@ -10,6 +10,7 @@ services:
     volumes:
       - backend_logs:/var/log/fleet
       - ./fleet_master/migrations:/app/migrations
+      - fleet_config:/app/config
     networks:
       - fleet_network
     healthcheck:
@@ -30,6 +31,7 @@ services:
       - backend
     volumes:
       - backend_logs:/var/log/fleet
+      - fleet_config:/app/config
     networks:
       - fleet_network
     healthcheck:
@@ -133,6 +135,7 @@ volumes:
   postgres_data:
   pgadmin_data:
   backend_logs:
+  fleet_config:
   letsencrypt:
   certbot_www:
   nginx_logs:
