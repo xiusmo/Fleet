@@ -544,7 +544,7 @@ export default {
 }
 
 .signing-btn {
-  background-color: var(--color-primary-dark) !important;
+  background-color: var(--color-primary) !important;
   box-shadow: 0 0 0 rgba(var(--color-primary-rgb), 0.4);
   transition: all 0.3s ease;
 }
