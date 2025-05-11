@@ -33,7 +33,7 @@ def load_private_key(path: str) -> str:
         return private_pem
     return key_path.read_text()
 
-def load_public_key(node_name: str, base_path="config/fleet/public_keys") -> str:
+def load_public_key(node_name: str, base_path="config/public_keys") -> str:
     key_path = Path(base_path) / f"{node_name}.pem"
     
     # 如果公钥不存在，记录警告
@@ -68,7 +68,7 @@ def generate_rsa_key_pair(node_name: str) -> tuple:
     
     return private_pem, public_pem
 
-def save_node_public_key(node_name: str, public_key: str, base_path="config/fleet/public_keys") -> bool:
+def save_node_public_key(node_name: str, public_key: str, base_path="config/public_keys") -> bool:
     """保存节点公钥到文件系统
     
     Args:

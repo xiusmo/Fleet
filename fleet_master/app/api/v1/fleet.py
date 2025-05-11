@@ -19,7 +19,7 @@ from app.services.handle_sign_from_ws import check_activity_exist, handle_sign_f
 from shared.utils.http import AsyncHttpClient, get_http_client
 from shared.utils.logger import DBLogger, get_logger, LogCategory
 from shared.core.config import settings
-from app.utils.load_keys import save_node_public_key
+from app.utils.load_keys import save_node_public_key, load_private_key
 from pathlib import Path
 
 router = APIRouter()
@@ -27,16 +27,23 @@ router = APIRouter()
 # 分发公钥接口
 @router.get("/public-key/{name}")
 async def get_public_key(name: str):
-    # 优先返回代码根目录 config/<name>/public.pem（例如 Master 自身）
-    key_self = Path(f"config/{name}/public.pem")
-    if key_self.exists():
-        pem = key_self.read_text()
-        return Response(content=pem, media_type="application/x-pem-file")
-    # 否则返回公共公钥存储目录 config/fleet/public_keys/<name>.pem
-    key_path = Path("config/fleet/public_keys") / f"{name}.pem"
+    # 先尝试从根目录的公钥目录加载
+    key_path = Path("config/public_keys") / f"{name}.pem"
     if key_path.exists():
         pem = key_path.read_text()
         return Response(content=pem, media_type="application/x-pem-file")
+    # 如果请求的是本节点自身，则确保密钥存在并从本地读取公钥
+    if name == settings.CURRENT_NODE:
+        private_path_str = f"config/{settings.CURRENT_NODE}/private.pem"
+        try:
+            # 自动生成私钥和公钥（若私钥不存在）
+            load_private_key(private_path_str)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"无法生成密钥对: {e}")
+        local_pub = Path("config") / settings.CURRENT_NODE / "public.pem"
+        if local_pub.exists():
+            pem = local_pub.read_text()
+            return Response(content=pem, media_type="application/x-pem-file")
     # 都找不到则返回 404
     raise HTTPException(status_code=404, detail="Key not found")
 
