@@ -12,7 +12,7 @@ from shared.db.session import get_db, engine
 from shared.models.user import User
 from shared.schemas.user import UserResponse, UserUpdate, UserDetail, UserResponseForAdmin
 from app.core.security import get_password_hash
-
+from scheduler.jobs.jobs import measure_ws_connections
 import time
 import traceback
 from sqlalchemy import text, inspect
@@ -20,6 +20,16 @@ from sqlalchemy.exc import SQLAlchemyError
 
 router = APIRouter()
 
+
+@router.get("/ws-connect-all")
+async def ws_connect_all(
+    current_user: User = Depends(get_current_active_admin)
+):
+    """
+    连接所有节点
+    """
+    await measure_ws_connections()
+    return {"message": "连接所有节点"}
 
 @router.get("/users", response_model=List[UserResponseForAdmin])
 async def read_users(
