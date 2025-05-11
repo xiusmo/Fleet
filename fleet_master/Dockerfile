@@ -1,5 +1,9 @@
 FROM python:3.11-slim-bookworm
 
+# 添加构建参数，用于注入引导令牌
+ARG BOOTSTRAP_TOKEN
+ENV BOOTSTRAP_TOKEN=${BOOTSTRAP_TOKEN}
+
 WORKDIR /app
 
 # 安装系统依赖并进行安全更新

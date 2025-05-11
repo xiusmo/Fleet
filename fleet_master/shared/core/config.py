@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     CURRENT_NODE: str
     ALLOW_REGISTER: bool = False
     
+    # 用于节点公钥自动注册的引导令牌
+    BOOTSTRAP_TOKEN: str = ""
+    
     # Turnstile设置
     TURNSTILE_SECRET_KEY: str = ""
     TURNSTILE_SITE_KEY: str = ""

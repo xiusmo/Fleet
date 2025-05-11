@@ -37,7 +37,7 @@ COPY --from=admin_builder /app/dist /usr/share/nginx/frontend/admin
 COPY --from=user_builder /app/dist /usr/share/nginx/frontend/user
 
 # 挂载证书和 Certbot Webroot
-VOLUME ["/etc/letsencrypt", "/var/www/certbot"]
+# VOLUME ["/etc/letsencrypt", "/var/www/certbot"]
 
 # 暴露端口
 EXPOSE 80 443

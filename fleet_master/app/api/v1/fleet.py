@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 import orjson
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -18,7 +18,30 @@ from shared.models.sign_activity import SignActivity
 from app.services.handle_sign_from_ws import check_activity_exist, handle_sign_from_ws
 from shared.utils.http import AsyncHttpClient, get_http_client
 from shared.utils.logger import DBLogger, get_logger, LogCategory
+from shared.core.config import settings
+from app.utils.load_keys import save_node_public_key
+
 router = APIRouter()
+
+# 注册节点公钥
+class KeyRegister(BaseModel):
+    name: str
+    public_key: str
+
+@router.post("/register-key")
+async def register_key(
+    payload: KeyRegister,
+    request: Request,
+):
+    # 校验引导令牌
+    token = request.headers.get("X-Bootstrap-Token")
+    if not token or token != settings.BOOTSTRAP_TOKEN:
+        raise HTTPException(status_code=403, detail="Invalid bootstrap token")
+    
+    if not save_node_public_key(payload.name, payload.public_key):
+        raise HTTPException(status_code=500, detail="Failed to save public key")
+    
+    return {"status": "ok", "message": f"节点 {payload.name} 的公钥已注册"}
 
 # 节点心跳
 @router.post("/ping/{name}")

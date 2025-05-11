@@ -10,7 +10,13 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
         self.expected_audience = expected_audience
 
     async def dispatch(self, request: Request, call_next):
-        if request.url.path.startswith(self.protected_prefix):
+        path = request.url.path
+        # 跳过公钥注册，用 Bootstrap Token 保护它
+        if path == f"{self.protected_prefix}/register-key":
+            return await call_next(request)
+
+        # 其它 /api/v1/abracadabra/* 路由依然走 JWT 校验
+        if path.startswith(self.protected_prefix):
             token = request.headers.get("Authorization")
             if not token or not token.startswith("Bearer "):
                 raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")

@@ -15,14 +15,6 @@ try:
 except FileNotFoundError:
     PRIVATE_KEY = None
 
-# 加载所有节点的公钥
-TRUSTED_KEYS = {
-    "duh": load_public_key("duh"),
-    # "node-A": load_public_key("node-A"),
-    # "node-B": load_public_key("node-B"),
-    # "node-C": load_public_key("node-C"),
-}
-
 ALGORITHM = "RS256"
 
 def create_access_token(
@@ -81,9 +73,14 @@ def verify_fleet_jwt(token: str, expected_audience: str) -> dict:
     try:
         unverified = jwt.get_unverified_claims(token)
         issuer = unverified.get("iss")
-        if issuer not in TRUSTED_KEYS:
+        if not issuer:
+            raise ValueError("Token missing issuer claim")
+        
+        # 动态加载公钥，不使用缓存的TRUSTED_KEYS
+        try:
+            public_key = load_public_key(issuer)
+            return jwt.decode(token, public_key, algorithms=[ALGORITHM], audience=expected_audience)
+        except FileNotFoundError:
             raise ValueError(f"Issuer {issuer} not in trusted list")
-        public_key = TRUSTED_KEYS[issuer]
-        return jwt.decode(token, public_key, algorithms=[ALGORITHM], audience=expected_audience)
     except JWTError as e:
         raise ValueError(f"Token validation failed: {str(e)}")
