@@ -27,11 +27,18 @@ router = APIRouter()
 # 分发公钥接口
 @router.get("/public-key/{name}")
 async def get_public_key(name: str):
+    # 优先返回代码根目录 config/<name>/public.pem（例如 Master 自身）
+    key_self = Path(f"config/{name}/public.pem")
+    if key_self.exists():
+        pem = key_self.read_text()
+        return Response(content=pem, media_type="application/x-pem-file")
+    # 否则返回公共公钥存储目录 config/fleet/public_keys/<name>.pem
     key_path = Path("config/fleet/public_keys") / f"{name}.pem"
-    if not key_path.exists():
-        raise HTTPException(status_code=404, detail="Key not found")
-    pem = key_path.read_text()
-    return Response(content=pem, media_type="application/x-pem-file")
+    if key_path.exists():
+        pem = key_path.read_text()
+        return Response(content=pem, media_type="application/x-pem-file")
+    # 都找不到则返回 404
+    raise HTTPException(status_code=404, detail="Key not found")
 
 # 注册节点公钥
 class KeyRegister(BaseModel):

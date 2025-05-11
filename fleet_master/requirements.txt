@@ -16,3 +16,5 @@ gunicorn==23.0.0                  # 生产环境部署
 psutil==7.0.0                     # 系统监控
 apscheduler==3.11.0               # 任务调度
 tzlocal==5.3.1                    # 时区处理
+# 添加 cryptography 库依赖，用于 RSA 密钥生成
+cryptography>=38.0.0
