@@ -8,13 +8,6 @@ import bcrypt
 from app.utils.load_keys import load_private_key, load_public_key
 from shared.core.config import settings
 
-
-# 加载当前节点的私钥（可选，如果需要签发 JWT）
-try:
-    PRIVATE_KEY = load_private_key(f"config/{settings.CURRENT_NODE}/private.pem")
-except FileNotFoundError:
-    PRIVATE_KEY = None
-
 ALGORITHM = "RS256"
 
 def create_access_token(
@@ -56,17 +49,20 @@ def get_password_hash(password: str) -> str:
 
 
 def create_fleet_jwt(audience: str, issuer: str = "fleet") -> str:
-    if not PRIVATE_KEY:
+    # 动态加载私钥，确保 setup_node_keys 执行后可以读取
+    try:
+        private_key = load_private_key(f"config/{settings.CURRENT_NODE}/private.pem")
+    except FileNotFoundError:
         raise RuntimeError("Private key not configured on this node")
-    now_utc = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     payload = {
         "iss": issuer,
         "aud": audience,
-        "iat": now_utc,
-        "exp": now_utc + timedelta(minutes=5),
+        "iat": now,
+        "exp": now + timedelta(minutes=5),
         "jti": str(uuid.uuid4())
     }
-    return jwt.encode(payload, PRIVATE_KEY, algorithm=ALGORITHM)
+    return jwt.encode(payload, private_key, algorithm=ALGORITHM)
 
 
 def verify_fleet_jwt(token: str, expected_audience: str) -> dict:
