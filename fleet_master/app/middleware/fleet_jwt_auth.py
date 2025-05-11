@@ -11,8 +11,8 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         path = request.url.path
-        # 跳过公钥注册，用 Bootstrap Token 保护它
-        if path == f"{self.protected_prefix}/register-key":
+        # 跳过公钥注册和分发，用 Bootstrap Token 保护它们
+        if path == f"{self.protected_prefix}/register-key" or path.startswith(f"{self.protected_prefix}/public-key"):
             return await call_next(request)
 
         # 其它 /api/v1/abracadabra/* 路由依然走 JWT 校验

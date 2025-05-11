@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 import orjson
 from pydantic import BaseModel
 from sqlalchemy import select
@@ -20,8 +20,18 @@ from shared.utils.http import AsyncHttpClient, get_http_client
 from shared.utils.logger import DBLogger, get_logger, LogCategory
 from shared.core.config import settings
 from app.utils.load_keys import save_node_public_key
+from pathlib import Path
 
 router = APIRouter()
+
+# 分发公钥接口
+@router.get("/public-key/{name}")
+async def get_public_key(name: str):
+    key_path = Path("config/fleet/public_keys") / f"{name}.pem"
+    if not key_path.exists():
+        raise HTTPException(status_code=404, detail="Key not found")
+    pem = key_path.read_text()
+    return Response(content=pem, media_type="application/x-pem-file")
 
 # 注册节点公钥
 class KeyRegister(BaseModel):
