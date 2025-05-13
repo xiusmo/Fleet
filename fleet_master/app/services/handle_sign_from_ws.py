@@ -45,9 +45,17 @@ async def check_activity_exist(sign_activity: SignActivityFromWS, db: AsyncSessi
     if not activity:
         sign_activity.cookies = user.cookies
         if settings.DEBUG:
-            result = await http_client.post(f"http://localhost:8001/api/v1/fleet/activity", json=sign_activity.model_dump(by_alias=True), headers={"Authorization": f"Bearer {create_fleet_jwt(worker.name)}"})
+            result = await http_client.post(
+                "http://localhost:8001/api/v1/fleet/activity",
+                json=sign_activity.model_dump(by_alias=False),
+                headers={"Authorization": f"Bearer {create_fleet_jwt(worker.name)}"}
+            )
         else:
-            result = await http_client.post(f"https://{worker.subdomain}.xiusmo.com/api/v1/fleet/activity", json=sign_activity.model_dump(by_alias=True), headers={"Authorization": f"Bearer {create_fleet_jwt(worker.name)}"})
+            result = await http_client.post(
+                f"https://{worker.subdomain}.xiusmo.com/api/v1/fleet/activity",
+                json=sign_activity.model_dump(by_alias=False),
+                headers={"Authorization": f"Bearer {create_fleet_jwt(worker.name)}"}
+            )
         if result.status_code != 200:
             raise HTTPException(status_code=400, detail="Failed to create activity")
         response_data = result.json()
