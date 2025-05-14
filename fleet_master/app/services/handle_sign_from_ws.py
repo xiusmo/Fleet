@@ -20,7 +20,7 @@ from shared.utils.http import AsyncHttpClient
 from shared.models.log import LogCategory, LogLevel
 from shared.utils.logger import DBLogger, get_logger
 from app.utils.push_notice import push_to_bark, push_to_ntfy
-from shared.schemas.sign_activity import Activity as ActivitySchema
+from shared.schemas.sign_activity import APIActivityResponse
 
 
 
@@ -60,18 +60,18 @@ async def check_activity_exist(sign_activity: SignActivityFromWS, db: AsyncSessi
         if result.status_code != 200:
             raise HTTPException(status_code=400, detail="Failed to create activity")
         response_data = result.json()
-        # 使用 Pydantic 验证并解析返回值
-        validated = ActivitySchema.model_validate(response_data)
-        # 将验证后的数据转换为字典
-        activity_dict = validated.model_dump()
-        # 添加额外的课程和教师信息
-        activity_dict.update({
-            "course_id": sign_activity.course_id,
-            "class_id": sign_activity.class_id,
-            "course_name": sign_activity.course_name,
-            "teacher_name": sign_activity.teacher_name,
-        })
-        # 实例化 SignActivity 并保存到数据库
+        # 使用专门的 Pydantic 模型解析 API 返回值
+        api_response = APIActivityResponse.model_validate(response_data)
+        
+        # 将 API 响应转换为 SignActivity 模型需要的字典
+        activity_dict = api_response.to_sign_activity(
+            course_id=sign_activity.course_id,
+            class_id=sign_activity.class_id,
+            course_name=sign_activity.course_name,
+            teacher_name=sign_activity.teacher_name
+        )
+        
+        # 创建 SignActivity 并存入数据库
         activity = SignActivity(**activity_dict)
         db.add(activity)
         await db.commit()
