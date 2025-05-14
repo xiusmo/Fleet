@@ -18,7 +18,7 @@ class Activity(BaseModel):
     course_id: Optional[int] = None
     class_id: Optional[str] = None
     title: Optional[str] = None
-    otherId: Optional[int] = None
+    other_id: Optional[int] = None
     sign_type: Optional[str] = None
     status: Optional[int] = None
     start_time: Optional[datetime] = None
@@ -34,7 +34,7 @@ class Activity(BaseModel):
     address: Optional[str] = None
     need_code: Optional[bool] = None
     sign_code: Optional[str] = None
-    requires_captcha: Optional[bool] = None
+    need_captcha: Optional[bool] = None
     captcha_type: Optional[str] = None
     attend_update_at: Optional[datetime] = None
     teacher_name: Optional[str] = None
