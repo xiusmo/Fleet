@@ -67,13 +67,13 @@ class APIActivityResponse(BaseModel):
     need_face: bool = Field(default=False, description="是否需要人脸识别")
     need_sign_out: bool = Field(default=False, description="是否需要签退")
     sign_out_time: Optional[str] = Field(None, description="签退时间字符串")
-    sign_out_time_long: int = Field(default=0, description="签退时长")
+    sign_out_time_long: Optional[int] = Field(0, description="签退时长")
     sign_code: Optional[str] = Field(None, description="签到码")
     need_code: bool = Field(default=False, description="是否需要签到码")
     latitude: float = Field(default=0.0, description="纬度")
     longitude: float = Field(default=0.0, description="经度")
     address: Optional[str] = Field(None, description="地址")
-    location_range: float = Field(default=0.0, description="位置范围")
+    location_range: Optional[float] = Field(0.0, description="位置范围")
 
     @classmethod
     def parse_datetime(cls, value: Optional[str]) -> Optional[datetime]:
