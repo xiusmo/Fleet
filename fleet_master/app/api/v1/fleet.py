@@ -109,7 +109,7 @@ async def register_worker(
 
 
 # 处理节点发来的活动
-@router.post("/activity")
+@router.post("/activity", response_model=Activity, response_model_exclude_none=True)
 async def activity(
     sign_activity: SignActivityFromWS,
     db: AsyncSession = Depends(get_db),
@@ -119,8 +119,9 @@ async def activity(
     activity, user = await check_activity_exist(sign_activity, db, http_client)
     asyncio.create_task(handle_sign_from_ws(user, activity))
     
-    # TODO creat task
-    return True
+    # TODO 创建后台任务
+    # 同步返回 Pydantic 模型，剔除 None 字段
+    return Activity.model_validate(activity, from_attributes=True)
 
 
 class UpdateDetectionStatus(BaseModel):
