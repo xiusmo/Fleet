@@ -72,4 +72,7 @@ class User(SQLModel, table=True):
             cookies["_uid"] = self.cx_uid
             cookies["UID"] = self.cx_uid
         
+        if self.fid:
+            cookies["fid"] = self.fid
+        
         return cookies
