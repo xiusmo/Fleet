@@ -117,9 +117,25 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
     else:
         result = await http_client.post(f"https://{user.worker.subdomain}.xiusmo.com/api/v1/fleet/signin", json={**activity.model_dump(by_alias=False), "cookies": user.cookies, "enc": enc, "random_photo": config.use_random_photo}, headers={"Authorization": f"Bearer {create_fleet_jwt(user.worker.name)}"})
     if result.status_code != 200:
-        await logger.error(f"Failed to sign activity {activity.activity_id} for user {user.cx_uid}")
+        await logger.error(
+            message="Failed to sign activity",
+            category=LogCategory.TASK,
+            user_id=user.id,
+            worker_id=user.worker.id,
+            task_id=activity.activity_id,
+            details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
+            source="app.services.handle_sign_from_ws.handle_immediate_sign"
+        )
         raise HTTPException(status_code=400, detail="Failed to sign")
-    await logger.info(f"Sign activity {activity.activity_id} for user {user.cx_uid} success")
+    await logger.info(
+        message="Sign activity succeeded",
+        category=LogCategory.TASK,
+        user_id=user.id,
+        worker_id=user.worker.id,
+        task_id=activity.activity_id,
+        details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
+        source="app.services.handle_sign_from_ws.handle_immediate_sign"
+    )
     
     response_data = result.json()
     await _push_notice_when_sign(user=user, activity=activity, config=config, response_data=response_data, logger=logger, http_client=http_client)
@@ -135,13 +151,37 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
         }
         detection.status = "failed"
         detection.message = json.dumps(message, ensure_ascii=False)
-        await logger.error(f"Failed to sign activity {activity.activity_id} for user {user.cx_uid} {json.dumps(message, ensure_ascii=False)}")
+        await logger.error(
+            message="Failed to sign activity with response",
+            category=LogCategory.TASK,
+            user_id=user.id,
+            worker_id=user.worker.id,
+            task_id=activity.activity_id,
+            details={
+                "user_name": user.person_name or user.username,
+                "activity_type": activity.other_id,
+                "error": message
+            },
+            source="app.services.handle_sign_from_ws.handle_immediate_sign"
+        )
         await db.commit()
         return message
     else:
         detection.status = "failed"
         detection.message = "未知错误, 日志已记录"
-        await logger.error(f"Failed to sign activity {activity.activity_id} for user {user.cx_uid}, response: {response_data}")
+        await logger.error(
+            message="Failed to sign activity with unexpected response",
+            category=LogCategory.TASK,
+            user_id=user.id,
+            worker_id=user.worker.id,
+            task_id=activity.activity_id,
+            details={
+                "user_name": user.person_name or user.username,
+                "activity_type": activity.other_id,
+                "response_data": response_data
+            },
+            source="app.services.handle_sign_from_ws.handle_immediate_sign"
+        )
         await db.commit()
         raise HTTPException(status_code=400, detail="Failed to sign, unknown error")
 
@@ -170,9 +210,25 @@ async def handle_threshold_sign(*, user: User, activity: SignActivity, config: S
             "random_photo": config.use_random_photo,
         }, headers={"Authorization": f"Bearer {create_fleet_jwt(worker.name)}"})
     if result.status_code != 200:
-        await logger.error(f"Failed to sign activity {activity.activity_id} for user {user.cx_uid}")
+        await logger.error(
+            message="Failed to sign activity",
+            category=LogCategory.TASK,
+            user_id=user.id,
+            worker_id=worker.id if worker else None,
+            task_id=activity.activity_id,
+            details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
+            source="app.services.handle_sign_from_ws.handle_threshold_sign"
+        )
         raise HTTPException(status_code=400, detail="Failed to sign")
-    await logger.info(f"Sign activity threshold {activity.activity_id} for user {user.cx_uid} success")
+    await logger.info(
+        message="Threshold sign activity succeeded",
+        category=LogCategory.TASK,
+        user_id=user.id,
+        worker_id=worker.id if worker else None,
+        task_id=activity.activity_id,
+        details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
+        source="app.services.handle_sign_from_ws.handle_threshold_sign"
+    )
 
 async def handle_manual_sign(detection: UserActivityDetection, db: AsyncSession):
     detection.status = "waiting"
