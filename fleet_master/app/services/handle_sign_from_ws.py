@@ -121,8 +121,6 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
             message="Failed to sign activity",
             category=LogCategory.TASK,
             user_id=user.id,
-            worker_id=user.worker.id,
-            task_id=activity.activity_id,
             details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
             source="app.services.handle_sign_from_ws.handle_immediate_sign"
         )
@@ -131,8 +129,6 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
         message="Sign activity succeeded",
         category=LogCategory.TASK,
         user_id=user.id,
-        worker_id=user.worker.id,
-        task_id=activity.activity_id,
         details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
         source="app.services.handle_sign_from_ws.handle_immediate_sign"
     )
@@ -155,8 +151,6 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
             message="Failed to sign activity with response",
             category=LogCategory.TASK,
             user_id=user.id,
-            worker_id=user.worker.id,
-            task_id=activity.activity_id,
             details={
                 "user_name": user.person_name or user.username,
                 "activity_type": activity.other_id,
@@ -173,8 +167,6 @@ async def handle_immediate_sign(*, user: User, activity: SignActivity, enc: Opti
             message="Failed to sign activity with unexpected response",
             category=LogCategory.TASK,
             user_id=user.id,
-            worker_id=user.worker.id,
-            task_id=activity.activity_id,
             details={
                 "user_name": user.person_name or user.username,
                 "activity_type": activity.other_id,
@@ -214,8 +206,6 @@ async def handle_threshold_sign(*, user: User, activity: SignActivity, config: S
             message="Failed to sign activity",
             category=LogCategory.TASK,
             user_id=user.id,
-            worker_id=worker.id if worker else None,
-            task_id=activity.activity_id,
             details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
             source="app.services.handle_sign_from_ws.handle_threshold_sign"
         )
@@ -224,8 +214,6 @@ async def handle_threshold_sign(*, user: User, activity: SignActivity, config: S
         message="Threshold sign activity succeeded",
         category=LogCategory.TASK,
         user_id=user.id,
-        worker_id=worker.id if worker else None,
-        task_id=activity.activity_id,
         details={"user_name": user.person_name or user.username, "activity_type": activity.other_id},
         source="app.services.handle_sign_from_ws.handle_threshold_sign"
     )
