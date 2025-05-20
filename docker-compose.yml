@@ -86,6 +86,7 @@ services:
       - certbot_www:/var/www/certbot
       - nginx_logs:/var/log/nginx
       - ./speedtest:/usr/share/nginx/speedtest
+      - ./nginx/dynamic:/usr/share/nginx/dynamic
     depends_on:
       - backend
       - pgadmin
